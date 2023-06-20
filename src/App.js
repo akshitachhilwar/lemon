@@ -1,31 +1,39 @@
-import logo from './logo.svg';
 import React from "react";
-import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import NavBar from "./layouts/NavBar";
+import Footer from "./layouts/Footer";
+import Home from "./pages/Home";
+import Booking from "./pages/Booking";
+import BookingConfirmation from "./pages/BookingConfirmation";
+import { useFormContext } from "./store/FormContext";
+import "./App.css";
 
 function App() {
+  const { form } = useFormContext();
+
+  const formProps = {
+    name: form.name,
+    date: form.date,
+    time: form.time,
+    guests: form.numberOfGuests,
+    occasion: form.occasion,
+    table: form.tablePreference,
+    request: form.message,
+  };
+
   return (
-    <React.Fragment className="App">
-    <header>
-      <h1> Welcome</h1>
-
-    </header>
-
-    <nav>
-          <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-          </ul>
-        </nav>
-
-        <footer>
-        <p>Contact</p>
-        <p>Links To Social Media</p>
-      </footer>
-
-
-
-    </React.Fragment>
-
+    <BrowserRouter>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/booking" element={<Booking />} />
+        <Route
+          path="/booking-confirmation"
+          element={<BookingConfirmation {...formProps} />}
+        />
+      </Routes>
+      <Footer />
+    </BrowserRouter>
   );
 }
 
